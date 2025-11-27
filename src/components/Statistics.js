@@ -9,8 +9,8 @@ export default function Statistics() {
 
       <div className='bg-purple-300 rounded-md mt-4 p-6 text-white row-gap-4 space-y-10'>
         <p>Totalt antal projekt: </p>
-        <p>Totalt antal stygn: </p>
-        <p>Max antal stygn på ett projekt: </p>
+        <p>Totalt antal maskor: </p>
+        <p>Max antal maskor på ett projekt: </p>
       </div>
     </div>
     

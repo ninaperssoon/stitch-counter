@@ -7,19 +7,32 @@ export default function Projects() {
         { id: 1, name: 'Projekt 1' },
         { id: 2, name: 'Projekt 2' },
         { id: 3, name: 'Projekt 3' }
-      ]);
-    
+    ]);
+    const [newProjectId, setNewProjectId] = useState(null);
+    const [deletingProjectId, setDeletingProjectId] = useState(null);
+
     function handleCreateProject() {
         const projectName = prompt('Vad heter det nya projektet?');
         if (!projectName || projectName.trim() === '') {
             alert('Du måste ange ett projektnamn');
             return;
-        }       
-        setMyList([...myList, { id: myList.length + 1, name: projectName }]);   
+        }
+        const newId = myList.length + 1;
+        setNewProjectId(newId);
+        setMyList([...myList, { id: myList.length + 1, name: projectName }]); 
+        setTimeout(() => {
+            setNewProjectId(null);
+          }, 800);  
     };
     
     function handleDeleteProject(id) {
-        setMyList(myList.filter(item => item.id !== id));
+        setDeletingProjectId(id); // Markera först
+        
+        // Vänta på animation, sen ta bort
+        setTimeout(() => {
+            setMyList(myList.filter(item => item.id !== id));
+            setDeletingProjectId(null);
+        }, 500);
     }
 
     return (
@@ -34,6 +47,13 @@ export default function Projects() {
             </div>
             
             <div className='bg-purple-300 p-2 rounded-md mt-4'>
+
+                {myList.length === 0 && (
+                    <div className="text-white text-center p-4">
+                        Klicka på 'Skapa ny' för att börja!
+                    </div>
+                )}
+
                 {myList.map((item, i) =>
                     <ListItem 
                         key={item.id}
@@ -41,6 +61,8 @@ export default function Projects() {
                         name={item.name} 
                         isFirst={i === 0}
                         isLast={i === myList.length - 1}
+                        isNew={item.id === newProjectId}
+                        isDeleting={item.id === deletingProjectId}
                         onDelete={handleDeleteProject}
                     />
                 )}

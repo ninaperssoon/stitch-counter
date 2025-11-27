@@ -2,9 +2,9 @@ import '../App.css';
 import { createRoot } from 'react-dom/client';
 import Counter from './Counter';
 
-export default function ListItem({id, name, isFirst, isLast, onDelete}) {
+export default function ListItem({id, name, isFirst, isLast, isNew, isDeleting, onDelete}) {
 
-    function handleOpenCounter(id) {
+    function handleOpenCounter() {
       const width = 400;
       const height = 400;
       const left = (window.screen.width - width) / 2;
@@ -47,30 +47,51 @@ export default function ListItem({id, name, isFirst, isLast, onDelete}) {
       });
     }
 
-  return (
+    return (
+      <div className={`
+              ${isFirst ? 'rounded-t-md' : ''}
+              ${isLast ? 'rounded-b-md' : ''}
+              ${isNew ? 'animate-[slideIn_0.5s_ease-out]' : ''}
+              ${isDeleting ? 'animate-[fadeOut_0.5s_ease-out] opacity-0 scale-95' : ''}
+              bg-white text-purple-300 p-4 m-2 flex flex-row justify-between transition-all`
+              }>
+          <div>
+            {name}
+          </div>
+  
+          <div>
+            <button onClick={() => handleOpenCounter()} className='pr-2'>
+                Play
+            </button>
+  
+            <button onClick={() => onDelete(id)}>
+                Delete
+            </button>
+          </div>
+          <style>{`
+            @keyframes slideIn {
+              0% {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
 
-    <div className={`
-            ${isFirst ? 'rounded-t-md' : ''}
-            ${isLast ? 'rounded-b-md' : ''}
-            bg-white text-purple-300 p-4 m-2 flex flex-row justify-between`
-            }>
-        <div>
-          {name}
-        </div>
-
-        <div>
-          <button onClick={() => handleOpenCounter(id)} className='pr-2'>
-              {/* <img src={playIcon} alt="Play" /> */}
-              Play
-          </button>
-
-          <button onClick={() => onDelete(id)}>
-              {/* <img src={deleteIcon} alt="Delete" /> */}
-              Delete
-          </button>
-        </div>
-        
-    </div>
-  )
+            @keyframes fadeOut {
+              0% {
+                opacity: 1;
+                transform: scale(1);
+              }
+              100% {
+                opacity: 0;
+                transform: scale(0.95) translateX(20px);
+              }
+            }
+          `}</style>
+      </div>
+    )
 }
 
